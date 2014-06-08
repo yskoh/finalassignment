@@ -24,6 +24,8 @@ int main(void){
 		fflush(stdin);
 		order = input_order();
 		flag = execute_order(order, perArr, &perNum);
+		getchar();
+		system("cls");
 	}
 
 	return 0;
@@ -43,13 +45,16 @@ int input_order(void){
 	int order;
 	printf("수행할 메뉴 번호를 입력하세요 \n");
 	scanf_s("%d", &order);
+	getchar();
 	return order;
 }
 
 void view_list(Person * perArr, int * perNum) {
+	
 	printf("%-11s %-13s %-28s %s\n", "ID","NAME","ADDRESS","PHONE");
 	for (int i = 0; i < *perNum; i++){
 		printf("%-11d %-13s %-28s %s\n", perArr[i].id, perArr[i].name, perArr[i].address, perArr[i].phone);
+		
 	}
 }
 
@@ -62,6 +67,7 @@ int execute_order(int order, Person*perArr, int*perNum){
 		while(n==1){
 		printf("종료하기 전 저장하시겠습니까?\n1.yes 2.no\n");
 		scanf("%d", &selection);
+		getchar();
 		if (selection == 1){
 			save_file(perArr,perNum);
 			n = 0;
@@ -81,25 +87,31 @@ int execute_order(int order, Person*perArr, int*perNum){
 	else if (order == 1){
 		printf("명단 출력\n");
 		view_list(perArr, perNum);
+		
 	}
 	else if (order == 2){
 		printf("회원 검색\n");
 		find_person(perArr,perNum);
+		
 	}
 	else if (order == 3){
 		printf("등록 \n");
 		register_person(perArr,perNum);
+		
 	}
 	else if (order == 4){
 		printf("수정 \n");
 		revise_person(perArr, perNum);
+		
 	}
 	else if (order == 5){
 		printf("삭제 \n");
 		delete_person(perArr, perNum);
+		
 	}
 	else if (order == 6){
 		save_file(perArr, perNum);
+		
 	}
 	else
 	{
@@ -174,23 +186,26 @@ void register_person(Person * perArr, int * perNum) {
 		}
 	}
 
-	printf("입력할 전화번호");
+	printf("입력할 전화번호\n");
 	scanf("%s", new_person.phone);
-
+	getchar();
 	while (strlen(new_person.phone) != 13){
 		printf("***-****-***** 형태로 다시 입력해주세요 \n");
 		scanf("%s", new_person.phone);
+		getchar();
 	}
 
 	while ((new_person.phone[3] != '-') && (new_person.phone[9] != '-')){
-			printf("***-****-***** 형태로 다시 입력해주세요 \n");
-			scanf("%s", new_person.phone);
-		}
+		printf("***-****-***** 형태로 다시 입력해주세요 \n");
+		scanf("%s", new_person.phone);
+		getchar();
+	}
 	
 	while ((new_person.phone[i]<48) && (new_person.phone[i]>57)){
-					printf("***-****-***** 형태로 다시 입력해주세요 \n");
-					scanf("%s", new_person.phone);
-				}
+		printf("***-****-***** 형태로 다시 입력해주세요 \n");
+		scanf("%s", new_person.phone);
+		getchar();
+	}
 
 	// perArr[저장할 index]에 Person 저장
 	perArr[*perNum] = new_person;
@@ -217,6 +232,7 @@ void find_person(Person *perArr, int*perNum){
 	case 1:
 		printf("학번을 입력하세요\n");
 		scanf("%d", &search_id);
+		getchar();
 		for (i = 0; i < *perNum; i++){
 			if (perArr[i].id== search_id)
 			{
@@ -228,6 +244,7 @@ void find_person(Person *perArr, int*perNum){
 	case 2:
 		printf("이름을 입력하세요\n");
 		scanf("%s", search_name);
+		getchar();
 		for (i = 0; i < *perNum; i++){
 			if (strcmp(perArr[i].name, search_name) == 0)
 			{
@@ -238,7 +255,7 @@ void find_person(Person *perArr, int*perNum){
 		break;
 	case 3:
 		printf("주소를 입력하세요\n");
-		getchar();
+		//getchar();
 		fgets(search_address,100,stdin);
 		//printf("input: %d\n" + (search_address));
 		
@@ -264,19 +281,23 @@ void find_person(Person *perArr, int*perNum){
 	case 4:
 		printf("폰 번호를 입력하세요\n");
 		scanf("%s", search_phone); 
+		getchar();
 		while (strlen(search_phone) != 13){
 			printf("***-****-***** 형태로 다시 입력해주세요 \n");
 			scanf("%s", search_phone);
+			getchar();
 		}
 
 		while ((search_phone[3] != '-') && (search_phone[8] != '-')){
 			printf("***-****-***** 형태로 다시 입력해주세요 \n");
 			scanf("%s", search_phone);
+			getchar();
 		}
 
 		while ((search_phone[i]<=48) && (search_phone[i]>57)){
 			printf("***-****-***** 형태로 다시 입력해주세요 \n");
 			scanf("%s", search_phone);
+			getchar();
 		}
 		for (i = 0; i < *perNum; i++){
 			if (strcmp(perArr[i].phone, search_phone) == 0)
@@ -287,9 +308,9 @@ void find_person(Person *perArr, int*perNum){
 		}
 		break;
 		//해당 이름이 없다면???, 학번, 주소, 폰 번호
-		default:
+	default:
 		printf("잘못된 입력입니다 1~4를 입력해주세요\n");
-		}
+	}
 	if (flag == 0) {
 		printf("입력하신 정보가 없습니다 \n");
 	}
@@ -306,35 +327,40 @@ void revise_person(Person *perArr, int*perNum){
 	printf("수정할 정보는? \n");
 	printf("1. 학번\n2. 이름\n3. 주소\n4.폰 번호\n");
 	scanf("%d", &opt);
+	getchar();
 
 	switch (opt){
 	case 1:
 		printf("학번을 입력하세요\n");
 		scanf("%d", &search_id);
+		getchar();
 		for (i = 0; i < *perNum; i++){
 			if (perArr[i].id == search_id)
 			{
 				printf("%d\t%s\t%s\t%s\n", perArr[i].id, perArr[i].name, perArr[i].address, perArr[i].phone);
 				printf("수정하고픈 학번을 입력하여 주세요\n");
 				scanf("%d", &perArr[i].id);
+				getchar();
 			}
 		}
 		break;
 	case 2:
 		printf("이름을 입력하세요\n");
 		scanf("%s", search_name);
+		getchar();
 		for (i = 0; i < *perNum; i++){
 			if (strcmp(perArr[i].name, search_name) == 0)
 			{
 				printf("%d\t%s\t%s\t%s\n", perArr[i].id, perArr[i].name, perArr[i].address, perArr[i].phone);
 				printf("수정하고픈 이름을 입력하여 주세요\n");
 				scanf("%s", perArr[i].name);
+				getchar();
 			}
 		}
 		break;
 	case 3:
 		printf("주소를 입력하세요\n");
-		getchar();
+		//getchar();
 		fgets(search_address, 100, stdin);
 		//printf("input: %d\n" + (search_address));
 
@@ -355,6 +381,7 @@ void revise_person(Person *perArr, int*perNum){
 				printf("%d\t%s\t%s\t%s\n", perArr[i].id, perArr[i].name, perArr[i].address, perArr[i].phone);
 				printf("수정하고픈 주소로 입력하여 주세요\n");
 				fgets(perArr[i].address, 100, stdin);
+				perArr[i].address[strlen(perArr[i].address) - 1] = '\0';
 			}
 		}
 		break;
@@ -372,16 +399,19 @@ void revise_person(Person *perArr, int*perNum){
 				while (strlen(perArr[i].phone) != 13){
 					printf("***-****-***** 형태로 다시 입력해주세요 \n");
 					scanf("%s", perArr[i].phone);
+					getchar();
 				}
 
 				while ((perArr[i].phone[3] != '-') && (perArr[i].phone[8] != '-')){
 					printf("***-****-***** 형태로 다시 입력해주세요 \n");
 					scanf("%s", perArr[i].phone);
+					getchar();
 				}
 
 				while ((perArr[i].phone[i]<=48) && (perArr[i].phone[i]>57)){
 					printf("***-****-***** 형태로 다시 입력해주세요 \n");
 					scanf("%s", perArr[i].phone);
+					getchar();
 				}
 			}
 		}
@@ -390,6 +420,7 @@ void revise_person(Person *perArr, int*perNum){
 		printf("잘못된 입력입니다 1~4를 입력해주세요\n");
 	}
 		//printf("입력하신 정보가 없습니다\n");
+	//getchar();
 }
 
 
@@ -399,6 +430,7 @@ void delete_person(Person *perArr, int *perNum){
 
 	printf("삭제할 정보의 학번을 입력하세요\n");
 	scanf("%d", &search_id);
+	getchar();
 	for (i = 0; i < *perNum; i++){
 		if (perArr[i].id == search_id)
 		{
@@ -408,9 +440,6 @@ void delete_person(Person *perArr, int *perNum){
 				//삭제 함수
 			for (c = i; c < *perNum - 1; c++)
 				perArr[c] = perArr[c + 1];
-			//printf("Resultant array is\n");
-			//for (c = 0; c < *perNum - 1; c++)
-				//printf("%d\n",perArr[c]);
 		}
 	}
 }
